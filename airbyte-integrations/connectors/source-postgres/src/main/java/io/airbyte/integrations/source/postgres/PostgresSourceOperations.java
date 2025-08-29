@@ -248,8 +248,7 @@ public class PostgresSourceOperations extends AbstractJdbcCompatibleSourceOperat
     try {
       JsonNode parsed = new ObjectMapper().readTree(object.getValue());
       if (parsed.isArray()) {
-        LOGGER.info("inside array");
-        putJsonbArray(node, columnName, resultSet, colIndex);
+        node.putArray(columnName).addAll((ArrayNode) parsed);
       } else {
         node.set(columnName, parsed);
       }
