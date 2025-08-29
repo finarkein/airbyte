@@ -95,8 +95,8 @@ open class RedshiftSqlGenerator(
             UnsupportedOneOf.TYPE ->
                 DSL.field(
                     CASE_STATEMENT_NO_ELSE_SQL_TEMPLATE,
-                    jsonTypeOf(field).eq("object"),
-                    DSL.cast(field, structType)
+                    jsonTypeOf(field).eq("object").or(jsonTypeOf(field).eq("array")),
+                    DSL.cast(field, structType),
                 )
             Array.TYPE ->
                 DSL.field(

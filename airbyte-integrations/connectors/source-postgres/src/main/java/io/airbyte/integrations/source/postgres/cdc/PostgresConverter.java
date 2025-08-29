@@ -90,28 +90,16 @@ public class PostgresConverter implements CustomConverter<SchemaBuilder, Relatio
   }
 
   private void registerJsonb(RelationalColumn field, ConverterRegistration<SchemaBuilder> registration) {
-    registration.register(
-            SchemaBuilder.string().optional(), // default if it’s not an array
-            x -> {
-              if (x == null) {
-                return DebeziumConverterUtils.convertDefaultValue(field);
-              }
-              try {
-                var node = objectMapper.readTree(x.toString());
-                if (node.isArray()) {
-                  // return as a List<String> instead of a single JSON string
-                  List<String> values = new ArrayList<>();
-                  node.forEach(item -> values.add(item.toString()));
-                  return values;
-                } else {
-                  // return the JSON object as a string
-                  return node.toString();
-                }
-              } catch (JsonProcessingException e) {
-                throw new RuntimeException("Could not parse 'jsonb' value:" + e);
-              }
-            }
-    );
+    registration.register(SchemaBuilder.string().optional(), x -> {
+      if (x == null) {
+        return DebeziumConverterUtils.convertDefaultValue(field);
+      }
+      try {
+        return objectMapper.readTree(x.toString()).toString();
+      } catch (JsonProcessingException e) {
+        throw new RuntimeException("Could not parse 'jsonb' value:" + e);
+      }
+    });
   }
 
 
