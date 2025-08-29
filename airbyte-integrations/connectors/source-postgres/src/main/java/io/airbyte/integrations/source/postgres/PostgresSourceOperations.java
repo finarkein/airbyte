@@ -246,7 +246,15 @@ public class PostgresSourceOperations extends AbstractJdbcCompatibleSourceOperat
     final PGobject object = getObject(resultSet, colIndex, PGobject.class);
 
     try {
-      node.put(columnName, new ObjectMapper().readTree(object.getValue()));
+      JsonNode parsed = new ObjectMapper().readTree(object.getValue());
+      if (parsed.isArray()) {
+        node.putArray(columnName).addAll((ArrayNode) parsed);
+      } else if (parsed.isObject()) {
+        node.set(columnName, parsed);
+      } else {
+        // Optionally: handle primitive values
+        node.set(columnName, parsed);
+      }
     } catch (JsonProcessingException e) {
       throw new RuntimeException("Could not parse 'jsonb' value:" + e);
     }
