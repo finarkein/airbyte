@@ -135,17 +135,17 @@ constructor(
 
     @VisibleForTesting
     fun toStreamConfig(stream: ConfiguredAirbyteStream): StreamConfig {
-        if (stream.generationId == null || stream.minimumGenerationId == null) {
-            throw ConfigErrorException(
-                "You must upgrade your platform version to use this connector version. Either downgrade your connector or upgrade platform to 0.63.7"
-            )
-        }
-        if (
-            stream.minimumGenerationId != 0.toLong() &&
-                stream.minimumGenerationId != stream.generationId
-        ) {
-            throw UnsupportedOperationException("Hybrid refreshes are not yet supported.")
-        }
+//        if (stream.generationId == null || stream.minimumGenerationId == null) {
+//            throw ConfigErrorException(
+//                "You must upgrade your platform version to use this connector version. Either downgrade your connector or upgrade platform to 0.63.7"
+//            )
+//        }
+//        if (
+//            stream.minimumGenerationId != 0.toLong() &&
+//                stream.minimumGenerationId != stream.generationId
+//        ) {
+//            throw UnsupportedOperationException("Hybrid refreshes are not yet supported.")
+//        }
 
         val airbyteColumns =
             when (
