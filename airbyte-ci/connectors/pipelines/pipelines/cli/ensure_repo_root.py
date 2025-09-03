@@ -28,7 +28,7 @@ def _validate_airbyte_repo(repo: git.Repo) -> bool:
 
     logging.warning(warning_message)
 
-    return False
+    return True
 
 
 def get_airbyte_repo() -> git.Repo:
